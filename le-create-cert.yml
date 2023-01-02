@@ -6,7 +6,7 @@
     # site_dns is the DNS name you will be creating the cert for
     site_dns: "*.alpacx.be"
     #files_loc is where you will store your keys and certificates
-    files_loc: /var/cert-store
+    files_loc: /tmp/cert-store
     # private_key_le is the letsencrypt account key
     private_key_le: "{{ files_loc }}/le-account.key"
     # private_key_csr is the key associated with the certificate for this site
@@ -22,13 +22,13 @@
 #  - debug:
 #      var: files_loc
 
- # - name: Create directory for certs directory
- #   file:
- #     path: "{{ files_loc }}"
-  #    state: directory
-  #    mode: '0755'
-   #   owner: awx
-   #   group: awx
+  - name: Create directory for certs directory
+    file:
+      path: "{{ files_loc }}"
+      state: directory
+      mode: '0755'
+      owner: awx
+      group: awx
 
   - name: Generate Letsencrypt private key
     openssl_privatekey:
