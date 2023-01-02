@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     # site_dns is the DNS name you will be creating the cert for
-    site_dns: *.alpacx.be
+    site_dns: "*.alpacx.be"
     #files_loc is where you will store your keys and certificates
     files_loc: /opt/cert-store
     # private_key_le is the letsencrypt account key
