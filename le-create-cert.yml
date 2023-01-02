@@ -22,13 +22,13 @@
 #  - debug:
 #      var: files_loc
 
-  - name: Create directory for certs directory
-    file:
-      path: "{{ files_loc }}"
-      state: directory
-      mode: '0755'
-      owner: awx
-      group: awx
+ # - name: Create directory for certs directory
+ #   file:
+ #     path: "{{ files_loc }}"
+  #    state: directory
+  #    mode: '0755'
+   #   owner: awx
+   #   group: awx
 
   - name: Generate Letsencrypt private key
     openssl_privatekey:
