@@ -27,13 +27,25 @@
           api_key: "{{ api_key }}"
           api_email: "{{ api_email }}"
       register: letsencrypt
-    # Upload the SSL certificate and key to the F5 load balancer.
+    # Upload the SSL certificate to the F5 load balancer.
     - name: Upload SSL certificate and key to F5 load balancer
-      f5_bigip_ssl:
-        server: "{{ inventory_hostname }}"
-        user: "{{ f5_user }}"
-        password: "{{ f5_password }}"
-        certificate_name: "{{ domain_name }}"
-        certificate_content: "{{ letsencrypt.certificate }}"
+      bigip_ssl_certificate:
+        provider:
+          server: "{{ inventory_hostname }}"
+          user: "{{ f5_user }}"
+          password: "{{ f5_password }}"
+        name: "{{ domain_name }}"
+        content: "{{ letsencrypt.certificate }}"
         private_key_content: "{{ letsencrypt.private_key }}"
         state: present
+        
+    # Upload the SSL key to the F5 load balancer.
+    - name: Upload SSL certificate and key to F5 load balancer
+      bigip_ssl_key:
+        name: "{{ domain_name }}"
+        content: "{{ letsencrypt.private_key }}"
+        state: present
+        provider:
+          server: "{{ inventory_hostname }}"
+          user: "{{ f5_user }}"
+          password: "{{ f5_password }}"
