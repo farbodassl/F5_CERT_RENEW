@@ -3,6 +3,7 @@
   hosts: localhost
   gather_facts: false
   become: yes
+  become_method: sudo
   vars:
     # site_dns is the DNS name you will be creating the cert for
     site_dns: "*.alpacx.be"
