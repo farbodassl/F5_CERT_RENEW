@@ -1,0 +1,39 @@
+---
+# This playbook demonstrates how to request a Let's Encrypt wildcard SSL certificate for your domain
+# using the Cloudflare API and then deploy it on an F5 load balancer.
+
+- hosts: all
+  become: true
+  vars:
+    domain_name: alpacx.be
+    email: farbodassl@hotmail.com
+    api_key: "{{ lookup('env', 'CLOUDFLARE_API_KEY') }}"
+    api_email: "{{ lookup('env', 'CLOUDFLARE_API_EMAIL') }}"
+  tasks:
+    # Request a Let's Encrypt wildcard SSL certificate for your domain using the Cloudflare API.
+    - name: Request Let's Encrypt wildcard SSL certificate using Cloudflare API
+      acme_certificate:
+        account_key_src: /etc/letsencrypt/account.key
+        csr: /etc/letsencrypt/{{ domain_name }}.csr
+        dest: /etc/letsencrypt/{{ domain_name }}.crt
+        fullchain: /etc/letsencrypt/{{ domain_name }}.fullchain.pem
+        chain: /etc/letsencrypt/{{ domain_name }}.chain.pem
+        terms_agreed: yes
+        account_email: "{{ email }}"
+        account_key_content: "{{ acme_account_key }}"
+        challenge: dns-01
+        dns_provider: cloudflare
+        dns_provider_credentials:
+          api_key: "{{ api_key }}"
+          api_email: "{{ api_email }}"
+      register: letsencrypt
+    # Upload the SSL certificate and key to the F5 load balancer.
+    - name: Upload SSL certificate and key to F5 load balancer
+      f5_bigip_ssl:
+        server: "{{ inventory_hostname }}"
+        user: "{{ f5_user }}"
+        password: "{{ f5_password }}"
+        certificate_name: "{{ domain_name }}"
+        certificate_content: "{{ letsencrypt.certificate }}"
+        private_key_content: "{{ letsencrypt.private_key }}"
+        state: present
