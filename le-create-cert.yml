@@ -2,12 +2,10 @@
 - name: create LE cert
   hosts: localhost
   gather_facts: false
-#  become: true
   vars:
     # site_dns is the DNS name you will be creating the cert for
     site_dns: *.alpacx.be
     #files_loc is where you will store your keys and certificates
-#    files_loc: "{{ playbook_dir }}"
     files_loc: /opt/cert-store
     # private_key_le is the letsencrypt account key
     private_key_le: "{{ files_loc }}/le-account.key"
