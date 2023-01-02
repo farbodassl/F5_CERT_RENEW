@@ -5,7 +5,7 @@
 #  become: true
   vars:
     # site_dns is the DNS name you will be creating the cert for
-    site_dns: testtest.gregsowell.com
+    site_dns: *.alpacx.be
     #files_loc is where you will store your keys and certificates
 #    files_loc: "{{ playbook_dir }}"
     files_loc: /opt/cert-store
@@ -14,9 +14,9 @@
     # private_key_csr is the key associated with the certificate for this site
     private_key_csr: "{{ files_loc }}/{{ site_dns }}.key"
     # email used for cloudflare api
-    email: greg@gregsowell.com
+    email: farbodassl@hotmail.com
     # domain the cert lives under
-    dns_zone: gregsowell.com
+    dns_zone: alpacx.be
     # dns_key is your cloudflare api key
     dns_key: "{{ dns_keyc }}"
 
@@ -52,7 +52,7 @@
       acme_version: 2
       acme_directory: https://acme-v02.api.letsencrypt.org/directory
       contact:
-      - mailto:nomail@gregsowell.com
+      - mailto:farbodassl@hotmail.com
     delegate_to: localhost
 
   - name: Generate an OpenSSL Certificate Signing Request
